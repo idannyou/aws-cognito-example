@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
-
 import { Box, Button, Flex, Input, Link } from '@procore/core-react';
 
 class App extends Component {
