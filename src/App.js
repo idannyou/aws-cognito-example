@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Box, Button, Flex, Input, Link } from '@procore/core-react';
-
+import { Auth } from 'aws-amplify';
 class App extends Component {
   state = {
     confirmationCode: '',
-    userName: '',
+    email: '',
     password: '',
     signInMode: true
   };
@@ -21,14 +21,19 @@ class App extends Component {
     });
   };
 
-  triggerAction = action => () => {
-    const { confirmationCode, userName, password } = this.state;
-
-    console.log(`triggered ${action}`, confirmationCode, userName, password);
+  triggerAction = action => async event => {
+    const { confirmationCode, email, password } = this.state;
+    event.preventDefault();
+    try {
+      await Auth.signIn(this.state.email, this.state.password);
+      alert('Logged in');
+    } catch (e) {
+      alert(e.message);
+    }
   };
 
   render() {
-    const { confirmationCode, userName, password, signInMode } = this.state;
+    const { confirmationCode, email, password, signInMode } = this.state;
     return (
       <Flex
         alignItems="center"
@@ -46,9 +51,9 @@ class App extends Component {
 
         <Box margin="lg">
           <Input
-            placeholder="User Name"
-            value={userName}
-            onChange={this.onChangeText('userName')}
+            placeholder="Email"
+            value={email}
+            onChange={this.onChangeText('email')}
           />
         </Box>
         <Box margin="lg">
