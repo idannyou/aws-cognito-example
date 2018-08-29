@@ -73,24 +73,26 @@ const Authentication = ({ routeProps, props: { props } }) => {
               </FlexList>
             </Box>
 
-            <Menu.Footer>
-              {activeTab === 'sign_up' && (
-                <Flex
-                  alignItems="center"
-                  justifyContent="center"
-                  direction="column"
-                  style={{ width: '100%' }}
-                >
-                  <Box margin="lg">
-                    <Input
-                      placeholder="Verification Code"
-                      value={confirmationCode}
-                      onChange={onChangeInput({
-                        type: 'confirmationCode',
-                        onChangeLogin
-                      })}
-                    />
-                  </Box>
+            <Menu.Divider />
+
+            {activeTab === 'sign_up' && (
+              <Flex
+                alignItems="center"
+                justifyContent="center"
+                direction="column"
+                style={{ width: '100%' }}
+              >
+                <Box margin="sm">
+                  <Input
+                    placeholder="Verification Code"
+                    value={confirmationCode}
+                    onChange={onChangeInput({
+                      type: 'confirmationCode',
+                      onChangeLogin
+                    })}
+                  />
+                </Box>
+                <Box margin="sm">
                   <Button
                     onClick={onClickButton({
                       type: 'confirmation',
@@ -99,9 +101,9 @@ const Authentication = ({ routeProps, props: { props } }) => {
                   >
                     {'Confirm Code'}
                   </Button>
-                </Flex>
-              )}
-            </Menu.Footer>
+                </Box>
+              </Flex>
+            )}
           </Flex>
         </Menu>
       </Card>
