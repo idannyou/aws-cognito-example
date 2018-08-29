@@ -1,92 +1,50 @@
-import React, { Component } from 'react';
-import { Box, Button, Flex, Input, Link } from '@procore/core-react';
-import { Auth } from 'aws-amplify';
+import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
+import { Tabs, ToolHeader } from '@procore/core-react';
+
+import Routes from './Routes';
+
 class App extends Component {
   state = {
-    confirmationCode: '',
-    email: '',
-    password: '',
-    signInMode: true
+    active: ''
   };
 
-  onChangeText = state => event => {
-    this.setState({
-      [state]: event.target.value
-    });
+  isActive = tab => {
+    return tab === this.state.active;
   };
 
-  toggleMode = () => {
-    this.setState({
-      signInMode: !this.state.signInMode
-    });
-  };
-
-  triggerAction = action => async event => {
-    const { confirmationCode, email, password } = this.state;
-    event.preventDefault();
-    try {
-      await Auth.signIn(this.state.email, this.state.password);
-      alert('Logged in');
-    } catch (e) {
-      alert(e.message);
-    }
+  setActive = active => () => {
+    this.setState({ active });
   };
 
   render() {
-    const { confirmationCode, email, password, signInMode } = this.state;
     return (
-      <Flex
-        alignItems="center"
-        justifyContent="center"
-        direction="column"
-        style={{ width: '100%' }}
-      >
-        <Flex alignContent="space-between">
-          <Box margin="sm">
-            <Link onClick={this.toggleMode}>
-              {signInMode ? 'Sign Up' : 'Sign In'}
-            </Link>
-          </Box>
-        </Flex>
-
-        <Box margin="lg">
-          <Input
-            placeholder="Email"
-            value={email}
-            onChange={this.onChangeText('email')}
-          />
-        </Box>
-        <Box margin="lg">
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={this.onChangeText('password')}
-          />
-        </Box>
-        <Button onClick={this.triggerAction('Sign')}>
-          {signInMode ? 'Sign In' : 'Sign Up'}
-        </Button>
-        {!signInMode && (
-          <Flex
-            alignItems="center"
-            justifyContent="center"
-            direction="column"
-            style={{ width: '100%' }}
-          >
-            <Box margin="lg">
-              <Input
-                placeholder="Verification Code"
-                value={confirmationCode}
-                onChange={this.onChangeText('confirmationCode')}
-              />
-            </Box>
-            <Button onClick={this.triggerAction('Confirm Code')}>
-              {'Confirm Code'}
-            </Button>
-          </Flex>
-        )}
-      </Flex>
+      <Fragment>
+        <ToolHeader>
+          <ToolHeader.Title>AWS Cognito</ToolHeader.Title>
+          <ToolHeader.Tabs>
+            <Tabs>
+              <Tabs.Tab
+                active={this.isActive('sign_in')}
+                onClick={this.setActive('sign_in')}
+              >
+                <Tabs.Link>
+                  <Link to="sign_in">Sign In</Link>
+                </Tabs.Link>
+              </Tabs.Tab>
+              <Tabs.Tab
+                active={this.isActive('sign_up')}
+                onClick={this.setActive('sign_up')}
+              >
+                <Tabs.Link>
+                  <Link to="sign_up">Sign Up</Link>
+                </Tabs.Link>
+              </Tabs.Tab>
+            </Tabs>
+          </ToolHeader.Tabs>
+        </ToolHeader>
+        <Routes active={this.state.active} />
+      </Fragment>
     );
   }
 }
