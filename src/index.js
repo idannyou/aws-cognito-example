@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import Amplify from 'aws-amplify';
@@ -28,9 +28,9 @@ Amplify.configure({
 });
 
 ReactDOM.render(
-  <Router>
+  <BrowserRouter>
     <App />
-  </Router>,
+  </BrowserRouter>,
   document.getElementById('root')
 );
 registerServiceWorker();
